@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="task">
+    <h2>Завдання №1</h2>
+    <input type="text" id="inputField">
+    <button onclick="task1()">SHOW ME</button>
+</div>
+
+<div class="task">
+    <h2>Завдання №3</h2>
+    <input type="text" id="textInput">
+    <button onclick="task3()">Приховати</button>
+</div>
+
+<div class="task">
+    <h2 class="taskTitle">Завдання №5</h2>
+    <div id="place" style="width: 150px; height: 150px; background-color: lightblue; display: flex; justify-content: center; align-items: center; cursor: pointer;">Click me!</div>
+</div>
+
+<div class="task">
+    <h2>Завдання №7</h2>
+
+    <ul id="categories">
+        <li class="item">
+            <h2>Animals</h2>
+            <ul>
+                <li>Cat</li>
+                <li>Hamster</li>
+                <li>Horse</li>
+                <li>Parrot</li>
+            </ul>
+        </li>
+        <li class="item">
+            <h2>Products</h2>
+            <ul>
+                <li>Bread</li>
+                <li>Prasley</li>
+                <li>Cheese</li>
+            </ul>
+        </li>
+        <li class="item">
+            <h2>Technologies</h2>
+            <ul>
+                <li>HTML</li>
+                <li>CSS</li>
+                <li>JavaScript</li>
+                <li>React</li>
+                <li>Node.js</li>
+            </ul>
+        </li>
+    </ul>
+</div>
+
+<div class="task">
+    <h2>Завдання №8</h2>
+    <form class="login-form">
+        <label>
+            Email
+            <input type="email" name="email"/>
+        </label>
+        <label>
+            Password
+            <input type="password" name="password"/>
+        </label>
+        <button type="submit">Log in</button>
+    </form>
+</div>
+
+<div class="task">
+    <h2>Завдання №9</h2>
+    <div class="widget">
+        <p>Background color: <span class="color">-</span></p>
+        <button type="button" class="change-color">Change color</button>
+    </div>
+</div>
+
+<div class="task">
+    <h2>Завдання №10</h2>
+    <div id="controls">
+        <input type="number" min="1" max="100" step="1" />
+        <button type="button" data-create>Create</button>
+        <button type="button" data-destroy>Destroy</button>
+    </div>
+
+    <div id="boxes"></div>
+</div>
+<script>
+    // Завдання №1
+    function task1() {
+        let value = document.getElementById("inputField").value;
+        console.log("Значення з поля введення:", value);
+    }
+
+    //Завдання №3 
+    function task3() {
+        let textInput = document.getElementById("textInput");
+        let button = document.querySelectorAll("button")[1];
+
+        if (textInput.type === "text") {
+            textInput.type = "password";
+            button.textContent = "Розкрити";
+        } else {
+            textInput.type = "text";
+            button.textContent = "Приховати";
+        }
+    }
+
+    //Завдання №5
+    function task5(event) {
+        let place = document.getElementById("place");
+        let clickedOnPlace = (event.target === place);
+        console.log(clickedOnPlace);
+    }
+
+    document.getElementById("place").addEventListener("click", task5);
+
+    // Завдання №7 
+    {
+        const categoriesList = document.getElementById('categories');
+        const categoriesItems = categoriesList.querySelectorAll('li.item');
+
+        console.log('Number of categories:', categoriesItems.length);
+
+        categoriesItems.forEach(category => {
+            const categoryName = category.querySelector('h2').textContent;
+            const categoryItems = category.querySelectorAll('ul > li');
+
+            console.log(`Category: ${categoryName}`);
+            console.log(`Elements: ${categoryItems.length}`);
+        });
+    }
+
+    // Завдання №8
+    {
+        const loginForm = document.querySelector('.login-form');
+
+        loginForm.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const emailValue = loginForm.elements['email'].value.trim();
+            const passwordValue = loginForm.elements['password'].value.trim();
+
+            if (emailValue === '' || passwordValue === '') {
+                alert('All form fields must be filled in');
+            } else {
+                const formData = {
+                    email: emailValue,
+                    password: passwordValue
+                };
+                console.log(formData);
+
+                loginForm.reset();
+            }
+        });
+    }
+
+    // Генерує випадковий колір у форматі HEX
+    function getRandomHexColor() {
+        return `#${Math.floor(Math.random() * 16777215)
+            .toString(16)
+            .padStart(6, '0')}`;
+    }
+
+    // Завдання №9 
+    {
+        const button = document.querySelector('.change-color');
+        const colorSpan = document.querySelector('.color');
+
+        button.addEventListener('click', function () {
+            const randomColor = getRandomHexColor();
+            document.body.style.backgroundColor = randomColor;
+            colorSpan.textContent = randomColor;
+        });
+    }
+
+    // Завдання №10 
+    {
+        const controls = document.getElementById('controls');
+        const input = controls.querySelector('input');
+        const createBtn = controls.querySelector('[data-create]');
+        const destroyBtn = controls.querySelector('[data-destroy]');
+        const boxesContainer = document.getElementById('boxes');
+
+        createBtn.addEventListener('click', createBoxes);
+        destroyBtn.addEventListener('click', destroyBoxes);
+
+        function createBoxes() {
+            const amount = Number(input.value);
+            if (amount >= 1 && amount <= 100) {
+                const boxes = [];
+
+                for (let i = 0; i < amount; i++) {
+                    const box = document.createElement('div');
+                    box.style.width = `${30 + i * 10}px`;
+                    box.style.height = `${30 + i * 10}px`;
+                    box.style.backgroundColor = getRandomHexColor();
+                    box.style.display = 'flex';
+                    box.style.justifyContent = 'center';
+                    box.style.alignItems = 'center';
+                    box.style.cursor = 'pointer';
+                    box.textContent = 'Click me!';
+                    boxes.push(box);
+                }
+
+                boxesContainer.append(...boxes);
+                input.value = '';
+            } else {
+                alert('Please enter a number between 1 and 100');
+            }
+        }
+
+        function destroyBoxes() {
+            boxesContainer.innerHTML = '';
+        }
+    }
+</script>
+</body>
+</html>
+
